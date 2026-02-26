@@ -8,44 +8,51 @@ services:
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: 'none'
-    ports:
-      - "8080"
     volumes:
       - weaviate_data:/var/lib/weaviate
     networks:
-      - dokploy-network
+      - kaapi-network
 
   api:
     build: .
-    ports:
-      - "8000"
+    container_name: recogn-api
+    restart: always
+    environment:
+      - PYTHONUNBUFFERED=1
+      - WEAVIATE_HOST=weaviate:8080
     volumes:
       - ./app:/app/app
       - deepface_weights:/root/.deepface
-    environment:
-      - WATCHFILES_FORCE_POLLING=true
-      - PYTHONUNBUFFERED=1
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-    depends_on:
-      - weaviate
     networks:
-      - dokploy-network
+      - kaapi-network
+    # Si tu as besoin d'un domaine pour l'API (ex: api-recognition...) ajoute les labels ici
 
   frontend:
-    build: ./frontend
-    ports:
-      - "3000" # Tu consulteras ton React sur http://localhost:3000
-    depends_on:
-      - api
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: recogn-frontend
+    restart: always
+    environment:
+      - NODE_ENV=production
+      # L'URL de ton API pour le front-end
+      - REACT_APP_API_URL=https://api-recognition.kortexai.dev 
     networks:
-      - dokploy-network
+      - kaapi-network
+    labels:
+      - "traefik.enable=true"
+      # Configuration pour ton domaine client
+      - "traefik.http.routers.recogn-client.rule=Host(`client-recognition.kortexai.dev`)"
+      - "traefik.http.routers.recogn-client.entrypoints=websecure"
+      - "traefik.http.routers.recogn-client.tls.certresolver=letsencrypt"
+      # IMPORTANT : Si ton Dockerfile frontend utilise Nginx, mets 80. 
+      # Si c'est un serveur node (Next.js), garde 3000.
+      - "traefik.http.services.recogn-frontend.loadbalancer.server.port=80"
 
 networks:
-  dokploy-network:
+  kaapi-network:
     external: true
-
-
+    name: shapi-gufdth_kaapi-network
 
 volumes:
   weaviate_data:
