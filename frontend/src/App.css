@@ -1,0 +1,176 @@
+/* --- BASE --- */
+.app-container {
+  background-color: #0f172a;
+  color: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+header h1 { color: #38bdf8; margin-bottom: 20px; }
+.blue { color: #38bdf8; }
+.status-bar { font-size: 0.9rem; color: #94a3b8; margin-bottom: 10px; }
+
+main {
+  display: flex;
+  gap: 40px;
+  padding: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* --- LE CERCLE WEBCAM (CORRIGÉ) --- */
+.webcam-wrapper {
+  position: relative;
+  width: 450px;   /* Taille fixe pour un cercle parfait */
+  height: 450px;  /* Doit être égal à la largeur */
+  border-radius: 50%; 
+  overflow: hidden; /* Coupe ce qui dépasse du cercle */
+  border: 6px solid #1e293b;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.webcam-view {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover; /* REMPLIT LE CERCLE SANS DÉFORMER NI COUPER */
+  transform: scaleX(-1); /* Effet miroir pour l'utilisateur */
+}
+
+/* --- OVERLAYS --- */
+.faceid-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 4px dashed #38bdf8;
+  border-radius: 50%;
+  z-index: 10;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.result-overlay {
+  position: absolute;
+  bottom: 30px; /* On remonte le texte à l'intérieur du cercle */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.9);
+  padding: 10px 25px;
+  border-radius: 30px;
+  border: 1px solid #38bdf8;
+  font-weight: bold;
+  z-index: 30;
+  white-space: nowrap;
+}
+
+/* --- INSTRUCTIONS --- */
+.instruction-box {
+  position: absolute;
+  top: 30px;
+  width: 100%;
+  text-align: center;
+  z-index: 20;
+}
+
+.instruction-box h3 {
+  background: #38bdf8;
+  color: #0f172a;
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* --- CONTROLES & BOUTONS --- */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 350px;
+}
+
+.action-group {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+button {
+  background: #38bdf8;
+  color: #0f172a;
+  border: none; 
+  padding: 14px;
+  border-radius: 8px; 
+  cursor: pointer;
+  font-weight: bold; 
+  transition: all 0.3s ease;
+}
+
+button:hover { background: #7dd3fc; transform: translateY(-2px); }
+button:disabled { background: #475569; cursor: not-allowed; }
+
+.btn-register { background: #10b981; color: white; margin-top: 10px; }
+.btn-register:hover { background: #34d399; }
+
+.capture-btn {
+  background: #10b981;
+  color: white;
+  font-size: 1.1rem;
+  animation: pulse 2s infinite;
+}
+
+input {
+  padding: 12px; 
+  border-radius: 8px; 
+  border: 1px solid #334155;
+  background: #0f172a; 
+  color: white;
+  outline: none;
+}
+
+input:focus { border-color: #38bdf8; }
+
+/* --- LISTE --- */
+.people-list {
+  margin-top: 20px;
+  background: #0f172a;
+  padding: 15px;
+  border-radius: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.people-list h4 { margin-top: 0; color: #94a3b8; font-size: 0.9rem; }
+.people-list ul { list-style: none; padding: 0; margin: 0; }
+.people-list li { 
+  padding: 8px 0; 
+  border-bottom: 1px solid #1e293b; 
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+/* --- ANIMATIONS --- */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.step-dot {
+  width: 10px; height: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+.step-dot.active { background: #38bdf8; box-shadow: 0 0 8px #38bdf8; }
