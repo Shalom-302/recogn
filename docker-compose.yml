@@ -14,7 +14,7 @@ services:
     volumes:
       - weaviate_data:/var/lib/weaviate
     networks:
-      - app-network
+      - dokploy-network
 
   api:
     build: .
