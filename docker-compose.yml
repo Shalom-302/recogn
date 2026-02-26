@@ -10,7 +10,7 @@ services:
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
       DEFAULT_VECTORIZER_MODULE: 'none'
     ports:
-      - "8080:8080"
+      - "8080"
     volumes:
       - weaviate_data:/var/lib/weaviate
     networks:
@@ -19,7 +19,7 @@ services:
   api:
     build: .
     ports:
-      - "8000:8000"
+      - "8000"
     volumes:
       - ./app:/app/app
       - deepface_weights:/root/.deepface
@@ -35,7 +35,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "3001:80" # Tu consulteras ton React sur http://localhost:3000
+      - "3001" # Tu consulteras ton React sur http://localhost:3000
     depends_on:
       - api
     networks:
