@@ -2,7 +2,7 @@ import React, { useRef, useState, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import './App.css';
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = "https://api-recognition.kortexai.dev/api";
 
 // Configuration des étapes FaceID
 const ENROLLMENT_STEPS = [

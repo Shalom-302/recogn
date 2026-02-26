@@ -30,7 +30,7 @@ services:
     depends_on:
       - weaviate
     networks:
-      - app-network
+      - dokploy-network
 
   frontend:
     build: ./frontend
@@ -39,11 +39,13 @@ services:
     depends_on:
       - api
     networks:
-      - app-network
+      - dokploy-network
 
 networks:
-  app-network:
-    driver: bridge
+  dokploy-network:
+    external: true
+
+
 
 volumes:
   weaviate_data:
