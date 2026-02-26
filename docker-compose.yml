@@ -35,7 +35,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "3000:80" # Tu consulteras ton React sur http://localhost:3000
+      - "3001:80" # Tu consulteras ton React sur http://localhost:3000
     depends_on:
       - api
     networks:
